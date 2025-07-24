@@ -20,7 +20,9 @@ platforms:
 parts:
   nginx:
     plugin: autotools
-    source: https://nginx.org/download/nginx-1.27.5.tar.gz
+    source: https://github.com/nginx/nginx
+    source-type: git
+    source-tag: "release-1.27.5"
     build-packages:
       - libgd-dev
       - libpcre3-dev
@@ -47,6 +49,7 @@ parts:
       - --with-http_mp4_module
     override-build: |
       set -x
+      cp ${CRAFT_PART_BUILD}/auto/configure ${CRAFT_PART_BUILD}/
       craftctl default
       rm $CRAFT_PART_INSTALL/etc/nginx/nginx.conf
       # Create the nginx user
@@ -70,8 +73,9 @@ parts:
     source-tag: "3.19.0"
     source-depth: 1
     source-subdir: chaoscenter/web
+    build-snaps:
+      - node/22/stable
     override-build: |
-      curl -s "https://nodejs.org/dist/v22.13.1/node-v22.13.1-linux-x64.tar.gz" | tar --strip-components=1 -xzf - -C "/usr"
       npm install --global yarn
       cd ${CRAFT_PART_BUILD}/chaoscenter/web
       yarn
