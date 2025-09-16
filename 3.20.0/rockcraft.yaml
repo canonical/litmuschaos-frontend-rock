@@ -51,6 +51,8 @@ parts:
       # Create the nginx user
       groupadd --root ${CRAFT_PART_INSTALL} nginx
       useradd -d /home/nginx -s /bin/bash --root ${CRAFT_PART_INSTALL} -g nginx nginx
+      # write the workload version into a VERSION file
+      echo "$(craftctl get version)" > "${CRAFT_PART_INSTALL}/VERSION"
   config:
     plugin: dump
     after:
