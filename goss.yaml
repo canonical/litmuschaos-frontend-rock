@@ -5,3 +5,7 @@ http:
   config:
     status: 200
     url: http://localhost:8185
+file:
+  /VERSION:
+    exists: true
+    contents: [{{ .Env.VERSION }}]
