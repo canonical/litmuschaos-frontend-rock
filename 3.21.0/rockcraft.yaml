@@ -97,9 +97,9 @@ parts:
       default.conf: etc/nginx/conf.d/default.conf
   litmuschaos-frontend:
     plugin: nil
-    source: https://github.com/litmuschaos/litmus
+    source: https://github.com/mmkay/litmus
     source-type: git
-    source-tag: "3.21.0"
+    source-branch: "feat/auto-base-url"
     source-depth: 1
     source-subdir: chaoscenter/web
     build-snaps:
