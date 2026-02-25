@@ -112,6 +112,21 @@ parts:
       cp -r ${CRAFT_PART_BUILD}/chaoscenter/web/dist ${CRAFT_PART_INSTALL}/dist
     stage:
       - dist
+  litmusctl:
+    plugin: go
+    source: https://github.com/litmuschaos/litmusctl
+    source-type: git
+    source-tag: "release-1.22.0"
+    build-snaps:
+      - go/1.25/stable
+    build-environment:
+      - GOOS: "linux"
+      - GOARCH: "amd64"
+      - VERSION: "1.22.0"
+    override-build: |
+      go build -ldflags "-X main.CLIVersion=$VERSION" -v -o platforms-$VERSION/litmusctl main.go
+      mkdir -p $CRAFT_PART_INSTALL/usr/local/bin/
+      mv platforms-$VERSION/litmusctl $CRAFT_PART_INSTALL/usr/local/bin/litmusctl
   ca-certs:
     plugin: nil
     overlay-packages: [ca-certificates]

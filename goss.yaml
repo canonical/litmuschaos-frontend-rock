@@ -9,3 +9,5 @@ file:
   /VERSION:
     exists: true
     contents: [{{ .Env.VERSION }}]
+  /usr/local/bin/litmusctl:
+    exists: true
