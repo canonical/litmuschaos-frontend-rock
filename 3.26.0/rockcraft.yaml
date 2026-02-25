@@ -113,17 +113,20 @@ parts:
     stage:
       - dist
   litmusctl:
-    plugin: nil
-    build-packages:
-      - jq
-      - wget
+    plugin: go
+    source: https://github.com/litmuschaos/litmusctl
+    source-type: git
+    source-tag: "release-1.22.0"
+    build-snaps:
+      - go/1.25/stable
+    build-environment:
+      - GOOS: "linux"
+      - GOARCH: "amd64"
+      - VERSION: "1.22.0"
     override-build: |
-      litmusctl_version=$(curl -s https://api.github.com/repos/litmuschaos/litmusctl/releases | jq -r '.[0].tag_name')
-      wget https://litmusctl-production-bucket.s3.amazonaws.com/litmusctl-linux-amd64-$litmusctl_version.tar.gz
-      tar -zxvf litmusctl-linux-amd64-$litmusctl_version.tar.gz
-      chmod +x litmusctl
+      go build -ldflags "-X main.CLIVersion=$VERSION" -v -o platforms-$VERSION/litmusctl main.go
       mkdir -p $CRAFT_PART_INSTALL/usr/local/bin/
-      mv litmusctl $CRAFT_PART_INSTALL/usr/local/bin/litmusctl
+      mv platforms-$VERSION/litmusctl $CRAFT_PART_INSTALL/usr/local/bin/litmusctl
   ca-certs:
     plugin: nil
     overlay-packages: [ca-certificates]
