@@ -112,6 +112,18 @@ parts:
       cp -r ${CRAFT_PART_BUILD}/chaoscenter/web/dist ${CRAFT_PART_INSTALL}/dist
     stage:
       - dist
+  litmusctl:
+    plugin: nil
+    build-packages:
+      - jq
+      - wget
+    override-build: |
+      litmusctl_version=$(curl -s https://api.github.com/repos/litmuschaos/litmusctl/releases | jq -r '.[0].tag_name')
+      wget https://litmusctl-production-bucket.s3.amazonaws.com/litmusctl-linux-amd64-$litmusctl_version.tar.gz
+      tar -zxvf litmusctl-linux-amd64-$litmusctl_version.tar.gz
+      chmod +x litmusctl
+      mkdir -p $CRAFT_PART_INSTALL/usr/local/bin/
+      mv litmusctl $CRAFT_PART_INSTALL/usr/local/bin/litmusctl
   ca-certs:
     plugin: nil
     overlay-packages: [ca-certificates]
