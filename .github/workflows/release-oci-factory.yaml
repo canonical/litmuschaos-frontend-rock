@@ -7,9 +7,9 @@ on:
       - main
 
 jobs:
-  build:
-    uses: canonical/observability/.github/workflows/rock-release-oci-factory.yaml@v1
+  release-oci-factory:
+    name: Release to OCI Factory
+    uses: canonical/observability/.github/workflows/rock-release-oci-factory.yaml@v2
     secrets: inherit
     with:
-      rock-name: litmuschaos-frontend
       risk-track: edge
